@@ -34,6 +34,12 @@ type Expense struct {
 	Retimes uint
 }
 
+type Message struct {
+	SuccessInfo string `json:"sucessinfo"`
+
+	SpareMoney string `json:"sparemoney"`
+}
+
 func NewExpense() *Expense {
 	return &Expense{
 		CurrentMonthExpense: 0,                     //当月花销
