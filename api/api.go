@@ -45,8 +45,15 @@ func AddExpense(c *gin.Context) {
 	LogCmd(message)
 	model.CurrentExpense.Retimes++
 	// 在这里使用 number 变量执行相关操作，例如添加费用
-	c.JSON(200, gin.H{"当月已花": model.CurrentExpense.CurrentMonthExpense,
-		"message": fmt.Sprintf("已添加: %d", number)})
+
+	messaged := model.Message{
+		SuccessInfo: "添加成功： " + strconv.Itoa(int(number)),
+		SpareMoney:  "少花点吧！这个月已经花了： " + strconv.Itoa(model.CurrentExpense.CurrentMonthExpense),
+	}
+
+	c.JSON(200, messaged)
+	//c.JSON(200, gin.H{"当月已花": model.CurrentExpense.CurrentMonthExpense,
+	//	"message": fmt.Sprintf("已添加: %d", number)})
 
 }
 
@@ -62,6 +69,12 @@ func Delete(c *gin.Context) {
 		return
 	}
 
+	messaged := model.Message{
+		SuccessInfo: "删除成功： " + strconv.Itoa(int(model.CurrentExpense.Prenumber)),
+		SpareMoney:  "少花点吧！这个月已经花了： " + strconv.Itoa(model.CurrentExpense.CurrentMonthExpense),
+	}
+
+	c.JSON(200, messaged)
 	model.CurrentExpense.Retimes++
 	model.CurrentExpense.Prenumber = 0
 	// 将 JSON 字节切片转换为字符串
@@ -98,19 +111,46 @@ func LogCmd(message string) {
 }
 
 func GetMonth(c *gin.Context) {
-	c.JSON(200, gin.H{"你这个月已经花了这么多钱": model.CurrentExpense.CurrentMonthExpense})
+	message := model.Message{
+		SuccessInfo: "这个月已经花了这么多： " + strconv.Itoa(int(model.CurrentExpense.CurrentMonthExpense)),
+		SpareMoney:  "少花点吧！",
+	}
+
+	c.JSON(200, message)
+
+	//c.JSON(200, gin.H{"你这个月已经花了这么多钱": model.CurrentExpense.CurrentMonthExpense})
 }
 
 func GetWeek(c *gin.Context) {
-	c.JSON(200, gin.H{"你这周花了这么多钱": model.CurrentExpense.CurrentWeekExpense})
+	message := model.Message{
+		SuccessInfo: "这周已经花了这么多: " + strconv.Itoa(int(model.CurrentExpense.CurrentWeekExpense)),
+		SpareMoney:  "少花点吧！",
+	}
+
+	c.JSON(200, message)
+
+	//c.JSON(200, gin.H{"你这周花了这么多钱": model.CurrentExpense.CurrentWeekExpense})
 }
 
 func GetDay(c *gin.Context) {
-	c.JSON(200, gin.H{"你今天花了这么多钱": model.CurrentExpense.CurrentDayExpense})
+	message := model.Message{
+		SuccessInfo: "今天花了这么多： " + strconv.Itoa(int(model.CurrentExpense.CurrentDayExpense)),
+		SpareMoney:  "少花点吧！",
+	}
+
+	c.JSON(200, message)
+
+	//c.JSON(200, gin.H{"你今天花了这么多钱": model.CurrentExpense.CurrentDayExpense})
 }
 
 func GetTimes(c *gin.Context) {
-	c.JSON(200, gin.H{"这么多次": model.CurrentExpense.Retimes})
+	message := model.Message{
+		SuccessInfo: "这么多次啦！: " + strconv.Itoa(int(model.CurrentExpense.Retimes)),
+		SpareMoney:  "少花点吧！",
+	}
+
+	c.JSON(200, message)
+	//c.JSON(200, gin.H{"这么多次": model.CurrentExpense.Retimes})
 }
 
 func MulGetMonth(c *gin.Context) {
@@ -124,7 +164,12 @@ func MulGetMonth(c *gin.Context) {
 	size := len(model.CurrentExpense.HistoryMonth)
 
 	if size < cnt {
-		c.JSON(500, gin.H{"error": "没这么久"})
+		message := model.Message{
+			SuccessInfo: "没这么久！",
+			SpareMoney:  "少花点吧！",
+		}
+
+		c.JSON(200, message)
 	}
 
 	if err != nil {
@@ -147,7 +192,12 @@ func MulGetWeek(c *gin.Context) {
 	size := len(model.CurrentExpense.HistoryWeek)
 
 	if size < cnt {
-		c.JSON(500, gin.H{"error": "没这么久"})
+		message := model.Message{
+			SuccessInfo: "没这么久！",
+			SpareMoney:  "少花点吧！",
+		}
+
+		c.JSON(200, message)
 	}
 
 	if err != nil {
@@ -170,7 +220,12 @@ func MulGetDay(c *gin.Context) {
 	size := len(model.CurrentExpense.HistoryDay)
 
 	if size < cnt {
-		c.JSON(500, gin.H{"error": "没这么久"})
+		message := model.Message{
+			SuccessInfo: "没这么久！",
+			SpareMoney:  "少花点吧！",
+		}
+
+		c.JSON(200, message)
 	}
 
 	if err != nil {
