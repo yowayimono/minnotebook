@@ -15,6 +15,7 @@ func StartCron() {
 	WeeklyTask(c)
 	DaylyTask(c)
 	Mtest(c)
+	MM(c)
 	c.Start()
 }
 
@@ -25,6 +26,16 @@ func Mtest(c *cron.Cron) {
 	})
 	if err != nil {
 		log.Fatal("添加每一分钟执行的定时任务失败:", err)
+	}
+}
+
+func MM(c *cron.Cron) {
+	_, err := c.AddFunc("30 * * * *", func() {
+		fmt.Println("每小时执行的任务。。。。。。")
+	})
+
+	if err != nil {
+		log.Fatal("添加任务失败...", err)
 	}
 }
 
